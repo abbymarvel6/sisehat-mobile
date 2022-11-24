@@ -38,9 +38,9 @@ Modul Dokter merupakan sebuah fitur yang diimplementasikan bagi user tipe Dokter
 Modul Obat merupakan sebuah fitur yang diimplementasikan bagi user tipe Dokter dan Pasien, dimana user Dokter dapat memberikan rekomendasi obat untuk menangani keluhan dan diagnosa yang telah dilakukan, dan daftar rekomendasi obat tersebut lalu dapat dilihat oleh Pasien.
 
 
-## Alur Pengintegrasian dengan Web Server
-1. Menambahkan dependency http ke proyek untuk bertukar data melalui HTTP request
-2. Membuat model sesuai dengan respons dari data yang berasal dari web service
-3. Melakukan pengambilan data pada suatu web service dengan menggunakan dependensi http get
-4. Mengkonversikan objek yang sudah didapatkan dari web service ke model yang telah dibuat sebelumnya
-5. Menampilkan data yang terlah berhasil dikonversi ke aplikasi menggunakan FutureBuilder
+## Pengintegrasian dengan Web Server
+1. Menyimpan dependency http ke proyek untuk sharing data melalui HTTP request
+2. Membuat model sesuai dengan respons dari data yang berasal dari layanan web
+3. Mengimplementasikan pengambilan data pada suatu layanan web dengan dependensi http get
+4. Mengkonversikan objek yang sudah didapatkan dari layanan web ke model yang telah dibuat sebelumnya
+5. Menampilkan data yang telah berhasil dikonversi ke aplikasi dengan FutureBuilder
