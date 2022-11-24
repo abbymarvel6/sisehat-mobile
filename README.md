@@ -21,7 +21,7 @@ Modul ini sebagai kerangka dari akun yang akan dibuat oleh pengguna untuk menggu
 - Models: Feedback (atribut: nama, pesan)<br>
 Halaman utama ini menampilkan secara general deskripsi dari aplikasi SiSehat, dan juga terdapat tombol-tombol yang di route ke modul lainnya. Terdapat juga kolom feedback yang dapat diisi oleh pengguna, yang akan berguna untuk mengumpulkan masukan yang idenya dapat dimanfaatkan untuk mengembangkan lebih lanjut aplikasi SiSehat.
 
-#### 2. Registrasi (Abby)
+#### 2. Registrasi & Forum (Abby)
 - Models: Pasien (atribut: user), Dokter (atribut: user, nama_rumah_sakit)<br>
 Modul Registrasi akan digunakan untuk autorisasi dan autentikasi 2 tipe user yang ada agar pengguna dapat mengakses fitur-fitur dan halaman yang sesuai dengan jenis usernya.
 
@@ -36,3 +36,11 @@ Modul Dokter merupakan sebuah fitur yang diimplementasikan bagi user tipe Dokter
 #### 5. Obat (Nadya)
 - Models:  Obat (atribut: pasien (FK), dokter (FK), tanggal, nama_obat, deskripsi), Pasien, Dokter <br>
 Modul Obat merupakan sebuah fitur yang diimplementasikan bagi user tipe Dokter dan Pasien, dimana user Dokter dapat memberikan rekomendasi obat untuk menangani keluhan dan diagnosa yang telah dilakukan, dan daftar rekomendasi obat tersebut lalu dapat dilihat oleh Pasien.
+
+
+## Alur Pengintegrasian dengan Web Server
+1. Menambahkan dependency http ke proyek untuk bertukar data melalui HTTP request
+2. Membuat model sesuai dengan respons dari data yang berasal dari web service
+3. Melakukan pengambilan data pada suatu web service dengan menggunakan dependensi http get
+4. Mengkonversikan objek yang sudah didapatkan dari web service ke model yang telah dibuat sebelumnya
+5. Menampilkan data yang terlah berhasil dikonversi ke aplikasi menggunakan FutureBuilder
