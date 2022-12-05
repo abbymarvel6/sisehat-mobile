@@ -50,6 +50,20 @@ class _AddPenyakitPageState extends State<AddPenyakitPage> {
     return listPasien;
   }
 
+  // Future<Penyakit> addPenyakit(
+  //     String pasien, String namaPenyakit, String pesanDokter) async {
+  //   var url = Uri.parse('http://localhost:8000/add-penyakit-mobile/');
+
+  //   var response = await http.post(url, body: {
+  //     "pasien": pasien,
+  //     "dokter": null,
+  //     "namaPenyakit": namaPenyakit,
+  //     "tanggalDiagnosis": DateTime.now(),
+  //     "pesanDokter": pesanDokter,
+  //     "status": false
+  //   });
+  // }
+
   String _pasien = "";
   String _namaPenyakit = "";
   String _pesanDokter = "";

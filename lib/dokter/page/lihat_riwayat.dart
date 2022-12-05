@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -24,6 +27,9 @@ class LihatRiwayat extends StatelessWidget {
     return MaterialApp(
       title: 'Lihat Riwayat',
       home: LihatRiwayatPage(),
+      // routes: {
+      //   "/login": (BuildContext context) => const LoginPage(),
+      // },
     );
   }
 }
@@ -52,6 +58,8 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
   ];
 
   Future<List<Penyakit>> fetchPenyakit() async {
+    // var url = Uri.parse(
+    //     'https://web-production-0ada.up.railway.app/dokter/penyakit/');
     var url = Uri.parse('http://localhost:8000/dokter/penyakit/');
     var response = await http.get(
       url,
@@ -75,6 +83,8 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
   }
 
   Future<List<Keluhan>> fetchKeluhan() async {
+    // var url =
+    //     Uri.parse('https://web-production-0ada.up.railway.app/dokter/keluhan/');
     var url = Uri.parse('http://localhost:8000/dokter/keluhan/');
     var response = await http.get(
       url,
@@ -97,237 +107,26 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
     return listKeluhan;
   }
 
-  late List<Widget> views = [
-    Scaffold(
-        body: FutureBuilder(
-            future: fetchPenyakit(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.data == null) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                if (!snapshot.hasData) {
-                  return Column(
-                    children: const [
-                      Text(
-                        "Belum ada riwayat.",
-                        style:
-                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  );
-                } else {
-                  return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (_, index) => InkWell(
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: const BorderSide(
-                                color: Colors.grey,
-                              ),
-                            ),
-                            elevation: 2,
-                            shadowColor: Colors.black,
-                            child: ListTile(
-                              title: Text(
-                                "${snapshot.data![index].fields.namaPenyakit}",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              subtitle: Text(
-                                  "Tanggal:\n${parseDate(snapshot.data![index].fields.tanggalDiagnosis)}"),
-                              trailing: Text(
-                                "NIK Pasien:\n${snapshot.data![index].fields.pasien}",
-                                style: const TextStyle(color: Colors.grey),
-                              ),
-                            ),
-                          ),
-                          onTap: () async {
-                            await showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    elevation: 15,
-                                    child: Container(
-                                      child: ListView(
-                                        padding: const EdgeInsets.only(
-                                            top: 20, bottom: 20),
-                                        shrinkWrap: true,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.all(10),
-                                            child: Column(children: <Widget>[
-                                              Text(
-                                                "Pesan dari Dokter:\n",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(snapshot.data![index].fields
-                                                  .deskripsiKeluhan),
-                                              Padding(
-                                                padding: EdgeInsets.fromLTRB(
-                                                    50, 0, 50, 0),
-                                                child: CheckboxListTile(
-                                                    title:
-                                                        const Text('Sembuh:'),
-                                                    value: snapshot.data![index]
-                                                        .fields.sembuh,
-                                                    onChanged: (bool? value) {
-                                                      setState(() {
-                                                        // Set status di database;
-                                                      });
-                                                    }),
-                                              )
-                                            ]),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(10),
-                                            child: TextButton(
-                                              onPressed: () {
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          LihatRiwayat()),
-                                                );
-                                              },
-                                              child: const Text('Kembali'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                });
-                          }));
-                }
-              }
-            })),
-    Scaffold(
-        body: FutureBuilder(
-            future: fetchKeluhan(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.data == null) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                if (!snapshot.hasData) {
-                  return Column(
-                    children: const [
-                      Text(
-                        "Belum ada riwayat.",
-                        style:
-                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  );
-                } else {
-                  return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (_, index) => InkWell(
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: const BorderSide(
-                                color: Colors.grey,
-                              ),
-                            ),
-                            elevation: 2,
-                            shadowColor: Colors.black,
-                            child: ListTile(
-                              title: Text(
-                                "${snapshot.data![index].fields.tema}",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              subtitle: Text(
-                                  "Tanggal:\n${parseDate(snapshot.data![index].fields.tanggal)}"),
-                              trailing: Text(
-                                "NIK Pasien:\n${snapshot.data![index].fields.pasien}",
-                                style: const TextStyle(color: Colors.grey),
-                              ),
-                            ),
-                          ),
-                          onTap: () async {
-                            await showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    elevation: 15,
-                                    child: Container(
-                                      child: ListView(
-                                        padding: const EdgeInsets.only(
-                                            top: 20, bottom: 20),
-                                        shrinkWrap: true,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.all(10),
-                                            child: Column(
-                                              children: <Widget>[
-                                                const Text(
-                                                  "Deskripsi Keluhan:\n",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Text(snapshot.data![index]
-                                                    .fields.deskripsi),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(10),
-                                            child: TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('Kembali'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                });
-                          }));
-                }
-              }
-            })),
-  ];
+  bool statusUpdate = false;
 
   String parseDate(DateTime dateIn) {
     var dateFormatter = DateFormat('dd-MM-yyyy');
     return dateFormatter.format(dateIn);
   }
 
-  Widget parseStatus(bool status) {
-    return CheckboxListTile(
-        title: const Text('Sembuh:'),
-        value: status,
-        onChanged: (bool? value) {
-          setState(() {
-            status = value!;
-          });
-        });
+  bool parseStatus(bool status) {
+    if (status) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    // final request = context.watch<CookieRequest>();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: accentColor1,
         scaffoldBackgroundColor: primaryColor,
@@ -402,12 +201,269 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
             title: const Text('SiSehat'),
             backgroundColor: accentColor1,
           ),
-          body: TabBarView(
-            physics: const BouncingScrollPhysics(),
-            // Uncomment the line below and remove DefaultTabController if you want to use a custom TabController
-            // controller: _tabController,
-            children: views,
-          ),
+          body: TabBarView(physics: const BouncingScrollPhysics(),
+              // Uncomment the line below and remove DefaultTabController if you want to use a custom TabController
+              // controller: _tabController,
+              children: <Widget>[
+                Scaffold(
+                    body: FutureBuilder(
+                        future: fetchPenyakit(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.data == null) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else {
+                            if (!snapshot.hasData) {
+                              return Column(
+                                children: const [
+                                  Text(
+                                    "Belum ada riwayat.",
+                                    style: TextStyle(
+                                        color: Color(0xff59A5D8), fontSize: 20),
+                                  ),
+                                  SizedBox(height: 8),
+                                ],
+                              );
+                            } else {
+                              return ListView.builder(
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (_, index) => InkWell(
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          side: const BorderSide(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        elevation: 2,
+                                        shadowColor: Colors.black,
+                                        child: ListTile(
+                                          title: Text(
+                                            "${snapshot.data![index].fields.namaPenyakit}",
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          subtitle: Text(
+                                              "Tanggal:\n${parseDate(snapshot.data![index].fields.tanggalDiagnosis)}"),
+                                          trailing: Text(
+                                            "NIK Pasien:\n${snapshot.data![index].fields.pasien}",
+                                            style: const TextStyle(
+                                                color: Colors.grey),
+                                          ),
+                                        ),
+                                      ),
+                                      onTap: () async {
+                                        await showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return Dialog(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                elevation: 15,
+                                                child: StatefulBuilder(builder:
+                                                    (BuildContext context,
+                                                        StateSetter setState) {
+                                                  return Container(
+                                                    child: ListView(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 20,
+                                                              bottom: 20),
+                                                      shrinkWrap: true,
+                                                      children: <Widget>[
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  10),
+                                                          child: Column(
+                                                              children: <
+                                                                  Widget>[
+                                                                Text(
+                                                                  "Pesan dari Dokter:\n",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          18,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                Text(snapshot
+                                                                        .data![
+                                                                            index]
+                                                                        .fields
+                                                                        .deskripsiKeluhan +
+                                                                    "\n"),
+                                                                Padding(
+                                                                  padding: EdgeInsets
+                                                                      .fromLTRB(
+                                                                          50,
+                                                                          0,
+                                                                          50,
+                                                                          0),
+                                                                  child: CheckboxListTile(
+                                                                      title: const Text('Sembuh:'),
+                                                                      value: snapshot.data![index].fields.sembuh,
+                                                                      onChanged: (bool? value) {
+                                                                        http.get(
+                                                                            Uri.parse('http://localhost:8000/dokter/toggle-mobile/${snapshot.data![index].pk}'));
+                                                                        setState(
+                                                                            () {
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .fields
+                                                                              .sembuh = value!;
+                                                                        });
+                                                                      }),
+                                                                )
+                                                              ]),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(10),
+                                                          child: TextButton(
+                                                            onPressed: () {
+                                                              Navigator
+                                                                  .pushReplacement(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            LihatRiwayat()),
+                                                              );
+                                                            },
+                                                            child: const Text(
+                                                                'Kembali'),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                }),
+                                              );
+                                            });
+                                      }));
+                            }
+                          }
+                        })),
+                Scaffold(
+                    body: FutureBuilder(
+                        future: fetchKeluhan(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.data == null) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else {
+                            if (!snapshot.hasData) {
+                              return Column(
+                                children: const [
+                                  Text(
+                                    "Belum ada riwayat.",
+                                    style: TextStyle(
+                                        color: Color(0xff59A5D8), fontSize: 20),
+                                  ),
+                                  SizedBox(height: 8),
+                                ],
+                              );
+                            } else {
+                              return ListView.builder(
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (_, index) => InkWell(
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          side: const BorderSide(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        elevation: 2,
+                                        shadowColor: Colors.black,
+                                        child: ListTile(
+                                          title: Text(
+                                            "${snapshot.data![index].fields.tema}",
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          subtitle: Text(
+                                              "Tanggal:\n${parseDate(snapshot.data![index].fields.tanggal)}"),
+                                          trailing: Text(
+                                            "NIK Pasien:\n${snapshot.data![index].fields.pasien}",
+                                            style: const TextStyle(
+                                                color: Colors.grey),
+                                          ),
+                                        ),
+                                      ),
+                                      onTap: () async {
+                                        await showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return Dialog(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                elevation: 15,
+                                                child: Container(
+                                                  child: ListView(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 20,
+                                                            bottom: 20),
+                                                    shrinkWrap: true,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.all(10),
+                                                        child: Column(
+                                                          children: <Widget>[
+                                                            const Text(
+                                                              "Deskripsi Keluhan:\n",
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            Text(snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .fields
+                                                                    .deskripsi +
+                                                                "\n"),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(10),
+                                                        child: TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: const Text(
+                                                              'Kembali'),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            });
+                                      }));
+                            }
+                          }
+                        })),
+              ]),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: Container(
