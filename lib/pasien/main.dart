@@ -9,7 +9,7 @@ class Pasien extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dashboard Reborn',
+      title: 'Dashboard',
       theme: ThemeData(
         fontFamily: 'Quicksand',
         primaryColor: MyColors.primary,
@@ -23,7 +23,7 @@ class Pasien extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       themeMode: EasyDynamicTheme.of(context).themeMode,
-      home: MyNotePage(),
+      home: NotePage(),
     );
   }
 }

@@ -1,9 +1,9 @@
-import '../utils/ui_helpers.dart';
+import '../utils/interface_helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SexyTile extends StatelessWidget {
-  const SexyTile({
+class CommonTile extends StatelessWidget {
+  const CommonTile({
     this.child,
     this.color,
     this.splashColor,

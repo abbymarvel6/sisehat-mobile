@@ -1,10 +1,12 @@
-import '../pages/about_page.dart';
-import '../pages/gradients_page.dart';
-import '../pages/material_page.dart';
+import 'package:sisehat_mobile/main.dart' as parent;
+
+import 'obat_page.dart';
+import 'penyakit_page.dart';
+import 'keluhan_page.dart';
 import '../utils/colors.dart';
 import '../utils/text_styles.dart';
-import '../utils/ui_helpers.dart';
-import '../widgets/sexy_tile.dart';
+import '../utils/interface_helpers.dart';
+import '../widgets/common_tile.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,40 +14,58 @@ import 'package:flutter/material.dart';
 
 //this page is based on https://github.com/Ivaskuu/dashboard
 
-class MyHomePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List<String> itemNames = [
-      'Material++',
-      'Gradient Cards',
-      'About',
+      'keluhan',
+      'penyakit',
+      'obat',
     ]; //name of each individual tile
 
     return Scaffold(
-      backgroundColor: invertInvertColorsStrong(context),
+      backgroundColor: extraInvertColorsStrong(context),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(
-                left: 40.0,
-                top: 60.0,
-                bottom: 10.0,
+                left: 10.0,
+                top: 50.0,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    'Dashboard Reborn',
-                    style: isThemeCurrentlyDark(context)
-                        ? TitleStylesDefault.white
-                        : TitleStylesDefault.black,
+                  IconButton(
+                    icon: Icon(EvaIcons.arrowIosBack),
+                    tooltip: 'Go back',
+                    color: invertColorsStrong(context),
+                    iconSize: 26.0,
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) {
+                            return parent.MyApp();
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      'kembali',
+                      style: isThemeCurrentlyDark(context)
+                          ? TitleStylesDefault.white
+                          : TitleStylesDefault.black,
+                    ),
                   ),
                 ],
               ),
@@ -64,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           tag:
                               'tile$index', //using a different hero widget tag for
                           // each page mapped to the page's index value
-                          child: SexyTile(),
+                          child: CommonTile(),
                         ),
                         Container(
                           margin: EdgeInsets.all(15.0),
@@ -100,11 +120,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   CupertinoPageRoute(
                                     builder: (context) {
                                       if (index == 0) {
-                                        return MyMaterialPage();
+                                        return KeluhanPage();
                                       } else if (index == 1) {
-                                        return MyGradientsPage();
+                                        return PenyakitPage();
                                       } else if (index == 2) {
-                                        return MyAboutPage();
+                                        return ObatPage();
                                       } else {
                                         return null;
                                       }
@@ -138,8 +158,8 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: isThemeCurrentlyDark(context)
             ? 'Switch to light mode'
             : 'Switch to dark mode',
-        foregroundColor: invertInvertColorsStrong(context),
-        backgroundColor: invertInvertColorsTheme(context),
+        foregroundColor: extraInvertColorsStrong(context),
+        backgroundColor: extraInvertColorsTheme(context),
         elevation: 5.0,
         onPressed: () => EasyDynamicTheme.of(context).changeTheme(),
       ),

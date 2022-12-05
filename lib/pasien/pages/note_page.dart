@@ -1,18 +1,18 @@
 import '../pages/home_page.dart';
 import '../utils/colors.dart';
 import '../utils/text_styles.dart';
-import '../utils/ui_helpers.dart';
-import '../widgets/sexy_tile.dart';
+import '../utils/interface_helpers.dart';
+import '../widgets/common_tile.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyNotePage extends StatefulWidget {
+class NotePage extends StatefulWidget {
   @override
-  _MyNotePageState createState() => _MyNotePageState();
+  _NotePageState createState() => _NotePageState();
 }
 
-class _MyNotePageState extends State<MyNotePage> {
+class _NotePageState extends State<NotePage> {
   List<String> itemContent = [
     'Note: this app does nothing.',
     'Yep, you read that right! It\'s only meant to serve as a UI template for Flutter developers to use in their own apps.\n\nThe entire source code is freely available on GitHub, so you can tweak it and use it as per your liking.\n\nEnjoy, and don\'t forget to star the project on GitHub. It really helps me out!\n\n- Urmil Shroff',
@@ -21,7 +21,7 @@ class _MyNotePageState extends State<MyNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: invertInvertColorsStrong(context),
+      backgroundColor: extraInvertColorsStrong(context),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -48,7 +48,7 @@ class _MyNotePageState extends State<MyNotePage> {
                 children: <Widget>[
                   Hero(
                     tag: 'tile2',
-                    child: SexyTile(
+                    child: CommonTile(
                       child: Padding(
                         padding: EdgeInsets.all(20.0),
                         child: Column(
@@ -94,15 +94,15 @@ class _MyNotePageState extends State<MyNotePage> {
           size: 30.0,
         ),
         tooltip: 'Accept',
-        foregroundColor: invertInvertColorsStrong(context),
-        backgroundColor: invertInvertColorsTheme(context),
+        foregroundColor: extraInvertColorsStrong(context),
+        backgroundColor: extraInvertColorsTheme(context),
         elevation: 5.0,
         onPressed: () {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             CupertinoPageRoute(
               builder: (context) {
-                return MyHomePage();
+                return HomePage();
               },
             ),
           );
