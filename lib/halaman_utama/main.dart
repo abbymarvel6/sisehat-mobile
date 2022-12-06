@@ -1,115 +1,266 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        backgroundColor: Color.fromRGBO(6, 12, 35, 1),
+        centerTitle: true,
+        title: Image.asset(
+          "assets/images/logo.png",
+          width: 180,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      extendBody: true,
+      body: Container(
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(6, 12, 35, 1),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              // Navbar(),
+              Container(
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(232, 247, 252, 1),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 100,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20.0, horizontal: 40.0),
+                      child: Image.asset(
+                        "assets/images/About.png",
+                        width: 420,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "ABOUT US",
+                      style: TextStyle(
+                        color: Color.fromRGBO(23, 194, 236, 1),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Apa itu Covid Assistant ?",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26.0,
+                          color: Colors.black),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20.0, horizontal: 40),
+                      child: Text(
+                        "Covid Assistant (CoAss) yang merupakan aplikasi reminder dan tracking untuk pasien yang terpapar Covid-19. Tujuan dari aplikasi ini sama seperti namanya yaitu asisten untuk para pejuang Covid-19 dan membantu mereka dalam progress penyembuhan.",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            color: Color(0xFF878593),
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 100,
+                    ),
+                    Text(
+                      "Covid Assistant",
+                      style: TextStyle(
+                        color: Color.fromRGBO(23, 194, 236, 1),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Poppins",
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Tim Kami",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    
+                    SizedBox(
+                      height: 100,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Fitur Kami",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Poppins",
+                            ),
+                          ),
+                          Text(
+                            "Lihat semua",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color(0xFF878593),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.only(bottom: 12),
+                    ),
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: 300,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 6,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                child: Stack(
+                                  children: <Widget>[
+                                    Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 15, right: 10),
+                                        width: 200,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.3),
+                                                spreadRadius: 0.3,
+                                                blurRadius: 5.0)
+                                          ],
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // Padding(
+                                            //   padding:
+                                            //       const EdgeInsets.all(4.0),
+                                            //   child: Hero(
+                                            //       tag: fitur[index].namaFitur,
+                                            //       child: Container(
+                                            //         width: 200,
+                                            //         height: 200,
+                                            //         decoration: BoxDecoration(
+                                            //             image: DecorationImage(
+                                            //                 image: AssetImage(
+                                            //                     fitur[index]
+                                            //                         .imageUrl),
+                                            //                 fit: BoxFit
+                                            //                     .contain)),
+                                            //       )),
+                                            // ),
+                                            // Padding(
+                                            //   padding: const EdgeInsets.only(
+                                            //       left: 12, top: 4),
+                                            //   child: Text(
+                                            //     fitur[index].namaFitur,
+                                            //     style: TextStyle(
+                                            //       color:
+                                            //           const Color(0xff47455f),
+                                            //       fontSize: 16,
+                                            //       fontWeight: FontWeight.w800,
+                                            //       fontFamily: "Poppins",
+                                            //     ),
+                                            //   ),
+                                            // ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12, top: 16),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Cek disini',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Poppins',
+                                                      fontSize: 16,
+                                                      color: Color(0xFFababad),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    textAlign: TextAlign.left,
+                                                  ),
+                                                  Icon(
+                                                    Icons.arrow_forward,
+                                                    color:
+                                                        Color(0xFFababad),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 100,
+                        )
+                      ],
+                    ),
+                    Text(
+                      "FEEDBACK",
+                      style: TextStyle(
+                        color: Color.fromRGBO(23, 194, 236, 1),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Poppins",
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Tulis Feedback Anda Tentang Kami",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
