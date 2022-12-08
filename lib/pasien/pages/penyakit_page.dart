@@ -1,10 +1,14 @@
 import '../utils/colors.dart';
+import '../utils/fetch_penyakit.dart';
 import '../utils/text_styles.dart';
 import '../utils/interface_helpers.dart';
 import '../widgets/common_tile.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import 'dart:convert';
 
 class PenyakitPage extends StatefulWidget {
   @override
@@ -12,16 +16,6 @@ class PenyakitPage extends StatefulWidget {
 }
 
 class _PenyakitPageState extends State<PenyakitPage> {
-  List<String> itemTitles = [
-    'What is this app about?',
-    'Credits',
-  ];
-
-  List<String> itemContent = [
-    'Dashboard Reborn is a showcase of beautiful UI elements written purely in Dart code.\n\nThe entire project is open source, and you can use the code however you want in your own apps.\n\nThat said, if you liked this app or found it helpful, please fork/star it on GitHub and give me a shoutout. Pull requests are more than welcome too.\n\nThanks!',
-    'This app would not have been possible without the Flutter framework, the open source projects that I\'ve used and the tireless efforts of developers and contributors in the Flutter community. \n\nPlease see the README.md file in the repository below for more details.',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,42 +54,83 @@ class _PenyakitPageState extends State<PenyakitPage> {
               ),
             ),
             Expanded(
-              child: ListView(
-                children: List.generate(itemTitles.length, (index) {
-                  return CommonTile(
-                    child: Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            itemTitles[index],
-                            style: HeadingStylesDefault.accent,
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            overflow: TextOverflow.fade,
-                          ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Text(
-                            itemContent[index],
-                            style: isThemeCurrentlyDark(context)
-                                ? BodyStylesDefault.white
-                                : BodyStylesDefault.black,
-                            textAlign: TextAlign.left,
-                            softWrap: true,
-                            overflow: TextOverflow.fade,
-                          ),
-                        ],
-                      ),
-                    ),
-                    splashColor: MyColors.accent,
-                  );
-                }),
-              ),
-            ),
+                child: FutureBuilder(
+                    future: fetchPenyakit(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.data == null) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else {
+                        if (snapshot.data.isEmpty) {
+                          return Column(
+                            children: const [
+                              Text(
+                                "riwayat penyakit masih kosong",
+                                style: TextStyle(
+                                    color: Color(0xff59A5D8), fontSize: 32),
+                              ),
+                              SizedBox(height: 8),
+                            ],
+                          );
+                        } else {
+                          return ListView(
+                            children: List.generate(1, (index) {
+                              return CommonTile(
+                                child: Padding(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        snapshot.data[index].diagnosis +
+                                            " -- " +
+                                            snapshot.data[index].pasien,
+                                        style: HeadingStylesDefault.accent,
+                                        textAlign: TextAlign.center,
+                                        softWrap: true,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      Text(
+                                        snapshot.data[index].tanggal,
+                                        style: isThemeCurrentlyDark(context)
+                                            ? BodyStylesDefault.white
+                                            : BodyStylesDefault.black,
+                                        textAlign: TextAlign.left,
+                                        softWrap: true,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                      Text(
+                                        snapshot.data[index].deskripsi,
+                                        style: isThemeCurrentlyDark(context)
+                                            ? BodyStylesDefault.white
+                                            : BodyStylesDefault.black,
+                                        textAlign: TextAlign.left,
+                                        softWrap: true,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                      Text(
+                                        "Dokter " + snapshot.data[index].dokter,
+                                        style: isThemeCurrentlyDark(context)
+                                            ? BodyStylesDefault.white
+                                            : BodyStylesDefault.black,
+                                        textAlign: TextAlign.left,
+                                        softWrap: true,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                splashColor: MyColors.accent,
+                              );
+                            }),
+                          );
+                        }
+                      }
+                    }))
           ],
         ),
       ),
