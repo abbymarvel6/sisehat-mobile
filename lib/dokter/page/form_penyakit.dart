@@ -1,13 +1,11 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 
-import 'package:sisehat_mobile/dokter/models/pasien.dart';
-import 'package:sisehat_mobile/dokter/page/lihat_riwayat.dart';
-
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+
+import '../utils/fetchPasien.dart';
+import 'package:sisehat_mobile/dokter/page/lihat_riwayat.dart';
 
 final primaryColor = Color(0xFFEAE0CC);
 final secondaryColor = Color(0xFF798478);
@@ -16,38 +14,37 @@ final accentColor1 = Color(0xFF4D6A6D);
 final accentColor2 = Color(0xFFC9ADA1);
 
 class AddPenyakitPage extends StatefulWidget {
-  const AddPenyakitPage({super.key});
+  AddPenyakitPage({super.key, required this.username});
+
+  late String username;
 
   @override
-  State<AddPenyakitPage> createState() => _AddPenyakitPageState();
+  State<AddPenyakitPage> createState() =>
+      // _AddPenyakitPageState(request: request);
+      _AddPenyakitPageState(username: username);
 }
 
 class _AddPenyakitPageState extends State<AddPenyakitPage> {
+  _AddPenyakitPageState({required this.username});
+
+  late String username;
   final _formKey = GlobalKey<FormState>();
   final fieldText1 = TextEditingController();
   final fieldText2 = TextEditingController();
 
-  Future<List<Pasien>> fetchPasien() async {
-    var url = Uri.parse('http://localhost:8000/dokter/pasien/');
-    var response = await http.get(
-      url,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-    );
+  void addPenyakit(
+      username, String pasien, String namaPenyakit, String pesanDokter) async {
+    var url = Uri.parse(
+        'https://web-production-0ada.up.railway.app/dokter/add-penyakit-mobile/$pasien');
 
-    // melakukan decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    var map = <String, dynamic>{};
+    map["nama_penyakit"] = namaPenyakit;
+    map["deskripsi_keluhan"] = pesanDokter;
+    map["username"] = username;
 
-    // melakukan konversi data json menjadi object Pasien.
-    List<Pasien> listPasien = [];
-    for (var d in data) {
-      if (d != null) {
-        listPasien.add(Pasien.fromJson(d));
-      }
-    }
-    return listPasien;
+    var response = await http.post(url, body: map);
+
+    print(response.body);
   }
 
   String _pasien = "";
@@ -56,13 +53,18 @@ class _AddPenyakitPageState extends State<AddPenyakitPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    print("FP LOGGEDIN? ${request.loggedIn}");
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: AppBar(
         leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => LihatRiwayat()))),
+            onPressed: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        LihatRiwayatPage(username: username)))),
         title: const Text('Input Penyakit'),
         backgroundColor: accentColor1,
       ),
@@ -189,12 +191,10 @@ class _AddPenyakitPageState extends State<AddPenyakitPage> {
             if (_formKey.currentState!.validate()) {
               // simpen data
               _formKey.currentState!.save();
-              // print(_judul.toString());
-              // print(_nominal.toString());
-              // print(tipe.toString());
-              // var budget = Budget(
-              //     _judul.toString(), _nominal.toString(), tipe.toString());
-              // dataBudget.add(budget);
+              print(_pasien.toString());
+              print(_namaPenyakit.toString());
+              print(_pesanDokter.toString());
+              addPenyakit(username, _pasien, _namaPenyakit, _pesanDokter);
               showDialog(
                 context: context,
                 builder: (context) {
