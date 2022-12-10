@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
@@ -7,11 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-import 'package:sisehat_mobile/dokter/models/penyakit.dart';
-import 'package:sisehat_mobile/dokter/models/keluhan.dart';
 import 'package:sisehat_mobile/dokter/page/form_penyakit.dart';
+import 'package:sisehat_mobile/dokter/utils/drawer.dart';
+import 'package:sisehat_mobile/registrasi/logindokter.dart';
+import '../utils/fetchKeluhan.dart';
+import '../utils/fetchPenyakit.dart';
 
 final primaryColor = Color(0xFFEAE0CC);
 final secondaryColor = Color(0xFF798478);
@@ -19,30 +19,48 @@ final tertiaryColor = Color(0xFFA0A083);
 final accentColor1 = Color(0xFF4D6A6D);
 final accentColor2 = Color(0xFFC9ADA1);
 
-void main() => runApp(LihatRiwayat());
+void main() => runApp(const LihatRiwayat());
 
 class LihatRiwayat extends StatelessWidget {
+  const LihatRiwayat({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Lihat Riwayat',
-      home: LihatRiwayatPage(),
-      // routes: {
-      //   "/login": (BuildContext context) => const LoginPage(),
-      // },
-    );
+    return Provider(
+        create: (_) {
+          CookieRequest request = CookieRequest();
+          return request;
+        },
+        child: MaterialApp(
+          title: 'Lihat Riwayat',
+          home: LihatRiwayatPage(username: ""),
+          routes: {
+            "/login": (BuildContext context) => const DocLoginPage(),
+          },
+        ));
   }
 }
 
 class LihatRiwayatPage extends StatefulWidget {
+  LihatRiwayatPage({
+    super.key,
+    required this.username,
+  });
+
+  late String username;
+
   @override
   State<StatefulWidget> createState() {
-    return _LihatRiwayatPageState();
+    return _LihatRiwayatPageState(username: username);
   }
 }
 
 class _LihatRiwayatPageState extends State<LihatRiwayatPage>
     with TickerProviderStateMixin {
+  _LihatRiwayatPageState({required this.username});
+
+  late String username;
+
   late TabController _tabController;
 
   @override
@@ -56,56 +74,6 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
     Tab(text: 'Penyakit'),
     Tab(text: 'Keluhan'),
   ];
-
-  Future<List<Penyakit>> fetchPenyakit() async {
-    // var url = Uri.parse(
-    //     'https://web-production-0ada.up.railway.app/dokter/penyakit/');
-    var url = Uri.parse('http://localhost:8000/dokter/penyakit/');
-    var response = await http.get(
-      url,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-    );
-
-    // melakukan decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
-
-    // melakukan konversi data json menjadi object Penyakit.
-    List<Penyakit> listPenyakit = [];
-    for (var d in data) {
-      if (d != null) {
-        listPenyakit.add(Penyakit.fromJson(d));
-      }
-    }
-    return listPenyakit;
-  }
-
-  Future<List<Keluhan>> fetchKeluhan() async {
-    // var url =
-    //     Uri.parse('https://web-production-0ada.up.railway.app/dokter/keluhan/');
-    var url = Uri.parse('http://localhost:8000/dokter/keluhan/');
-    var response = await http.get(
-      url,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-    );
-
-    // melakukan decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
-
-    // melakukan konversi data json menjadi object Keluhan.
-    List<Keluhan> listKeluhan = [];
-    for (var d in data) {
-      if (d != null) {
-        listKeluhan.add(Keluhan.fromJson(d));
-      }
-    }
-    return listKeluhan;
-  }
 
   bool statusUpdate = false;
 
@@ -124,7 +92,8 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
 
   @override
   Widget build(BuildContext context) {
-    // final request = context.watch<CookieRequest>();
+    final request = context.watch<CookieRequest>();
+    print("L_R LOGGEDIN? ${request.loggedIn}");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -134,31 +103,7 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-          drawer: Drawer(
-            child: Column(
-              children: [
-                ListTile(
-                  title: const Text('Halaman Utama'),
-                  onTap: () {
-                    // Route menu ke halaman utama
-                    // Navigator.pop(
-                    //   context,
-                    // );
-                  },
-                ),
-                // Menambahkan clickable menu
-                ListTile(
-                  title: const Text('Logout'),
-                  onTap: () {
-                    // Route menu ke halaman utama sekalian logout
-                    // Navigator.pop(
-                    //   context,
-                    // );
-                  },
-                ),
-              ],
-            ),
-          ),
+          drawer: const RiwayatPageDrawer(),
           appBar: AppBar(
             bottom: TabBar(
               labelColor: Colors.white,
@@ -219,7 +164,7 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
                                   Text(
                                     "Belum ada riwayat.",
                                     style: TextStyle(
-                                        color: Color(0xff59A5D8), fontSize: 20),
+                                        color: Colors.black, fontSize: 20),
                                   ),
                                   SizedBox(height: 8),
                                 ],
@@ -310,7 +255,7 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
                                                                       value: snapshot.data![index].fields.sembuh,
                                                                       onChanged: (bool? value) {
                                                                         http.get(
-                                                                            Uri.parse('http://localhost:8000/dokter/toggle-mobile/${snapshot.data![index].pk}'));
+                                                                            Uri.parse('https://web-production-0ada.up.railway.app/dokter/toggle-mobile/${snapshot.data![index].pk}'));
                                                                         setState(
                                                                             () {
                                                                           snapshot
@@ -334,7 +279,9 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
                                                                 MaterialPageRoute(
                                                                     builder:
                                                                         (context) =>
-                                                                            LihatRiwayat()),
+                                                                            LihatRiwayatPage(
+                                                                              username: username,
+                                                                            )),
                                                               );
                                                             },
                                                             child: const Text(
@@ -365,7 +312,7 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
                                   Text(
                                     "Belum ada riwayat.",
                                     style: TextStyle(
-                                        color: Color(0xff59A5D8), fontSize: 20),
+                                        color: Colors.black, fontSize: 20),
                                   ),
                                   SizedBox(height: 8),
                                 ],
@@ -493,7 +440,9 @@ class _LihatRiwayatPageState extends State<LihatRiwayatPage>
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AddPenyakitPage()),
+                            builder: (context) => AddPenyakitPage(
+                                  username: username,
+                                )),
                       );
                     },
                     tooltip: 'Tambah Penyakit',
