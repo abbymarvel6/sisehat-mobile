@@ -128,6 +128,7 @@ class _KeluhanPageState extends State<KeluhanPage> {
                                   ),
                                 ),
                                 splashColor: MyColors.accent,
+                                onTap: () {},
                               );
                             }),
                           );

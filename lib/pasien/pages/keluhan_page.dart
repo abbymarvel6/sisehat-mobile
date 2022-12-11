@@ -27,7 +27,7 @@ class _MengeluhPageState extends State<MengeluhPage> {
   String deskripsi = "";
 
   List<String> daftarDokter = ['A', 'B', 'C', 'D', 'E', 'F', 'KI'];
-  String pilihDokter;
+  late String pilihDokter;
 
   @override
   Widget build(BuildContext context) {
@@ -106,13 +106,13 @@ class _MengeluhPageState extends State<MengeluhPage> {
                                 });
                               },
                               // Menambahkan behavior saat data disimpan
-                              onSaved: (String value) {
+                              onSaved: (String? value) {
                                 setState(() {
-                                  tema = value;
+                                  tema = value!;
                                 });
                               },
                               // Validator form
-                              validator: (String value) {
+                              validator: (String? value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Nama lengkap tidak boleh kosong';
                                 }
@@ -139,13 +139,13 @@ class _MengeluhPageState extends State<MengeluhPage> {
                                 });
                               },
                               // Menambahkan behavior saat data disimpan
-                              onSaved: (String value) {
+                              onSaved: (String? value) {
                                 setState(() {
-                                  deskripsi = value;
+                                  deskripsi = value!;
                                 });
                               },
                               // Validator form
-                              validator: (String value) {
+                              validator: (String? value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Nama lengkap tidak boleh kosong';
                                 }
@@ -170,9 +170,9 @@ class _MengeluhPageState extends State<MengeluhPage> {
                                   child: Text(items),
                                 );
                               }).toList(),
-                              onChanged: (String newValue) {
+                              onChanged: (String? newValue) {
                                 setState(() {
-                                  pilihDokter = newValue;
+                                  pilihDokter = newValue!;
                                 });
                               },
                             ),
@@ -187,7 +187,7 @@ class _MengeluhPageState extends State<MengeluhPage> {
                                 MaterialStateProperty.all(Colors.blue),
                           ),
                           onPressed: () {
-                            if (_formKey.currentState.validate()) {
+                            if (_formKey.currentState!.validate()) {
                               makePostRequest(pilihDokter, tema, deskripsi);
                             }
                           },

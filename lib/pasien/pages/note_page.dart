@@ -14,8 +14,8 @@ class NotePage extends StatefulWidget {
 
 class _NotePageState extends State<NotePage> {
   List<String> itemContent = [
-    'Note: this app does nothing.',
-    'Yep, you read that right! It\'s only meant to serve as a UI template for Flutter developers to use in their own apps.\n\nThe entire source code is freely available on GitHub, so you can tweak it and use it as per your liking.\n\nEnjoy, and don\'t forget to star the project on GitHub. It really helps me out!\n\n- Urmil Shroff',
+    'Silakan melihat riwayat pengobatan pasien',
+    'Pastikan rumah sakit tempat Anda berobat sudah terafiliasi dengan aplikasi ini agar riwayat pengobatan Anda dapat terekam.',
   ]; //the text in the tile
 
   @override
@@ -78,6 +78,7 @@ class _NotePageState extends State<NotePage> {
                         ),
                       ),
                       splashColor: MyColors.accent,
+                      onTap: () {},
                     ),
                   ),
                 ],

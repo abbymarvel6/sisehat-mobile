@@ -11,12 +11,12 @@ String toJson(List<Keluhan> data) =>
 
 class Keluhan {
   Keluhan({
-    @required this.id,
-    @required this.pasien,
-    @required this.dokter,
-    @required this.tema,
-    @required this.tanggal,
-    @required this.deskripsi,
+    required this.id,
+    required this.pasien,
+    required this.dokter,
+    required this.tema,
+    required this.tanggal,
+    required this.deskripsi,
   });
 
   int id;

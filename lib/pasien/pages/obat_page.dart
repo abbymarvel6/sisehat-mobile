@@ -92,6 +92,7 @@ class _ObatPageState extends State<ObatPage> {
                       ),
                     ),
                     splashColor: MyColors.accent,
+                    onTap: () {},
                   );
                 }),
               ),

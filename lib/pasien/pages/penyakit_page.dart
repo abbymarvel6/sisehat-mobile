@@ -128,6 +128,7 @@ class _PenyakitPageState extends State<PenyakitPage> {
                                   ),
                                 ),
                                 splashColor: MyColors.accent,
+                                onTap: () {},
                               );
                             }),
                           );

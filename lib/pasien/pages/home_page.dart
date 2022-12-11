@@ -81,12 +81,6 @@ class _HomePageState extends State<HomePage> {
                     return Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
-                        Hero(
-                          tag:
-                              'tile$index', //using a different hero widget tag for
-                          // each page mapped to the page's index value
-                          child: CommonTile(),
-                        ),
                         Container(
                           margin: EdgeInsets.all(15.0),
                           child: Material(
@@ -124,10 +118,8 @@ class _HomePageState extends State<HomePage> {
                                         return MengeluhPage();
                                       } else if (index == 1) {
                                         return PenyakitPage();
-                                      } else if (index == 2) {
-                                        return KeluhanPage();
                                       } else {
-                                        return null;
+                                        return KeluhanPage();
                                       }
                                     },
                                   ),
