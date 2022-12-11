@@ -37,7 +37,9 @@ class _MengeluhPageState extends State<MengeluhPage> {
       body: FutureBuilder(
         future: fetchDokter(),
         builder: (context, AsyncSnapshot snapshot) {
-          daftarDokter = snapshot.data;
+          if (snapshot != null) {
+            daftarDokter = snapshot.data;
+          }
           return Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -192,13 +194,7 @@ class _MengeluhPageState extends State<MengeluhPage> {
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.blue),
                           ),
-                          onPressed: () {
-                            if (_formKey.currentState != null) {
-                              if (_formKey.currentState!.validate()) {
-                                makePostRequest(pilihDokter, tema, deskripsi);
-                              }
-                            }
-                          },
+                          onPressed: () {},
                         ),
                       ]),
                     ),
@@ -211,29 +207,4 @@ class _MengeluhPageState extends State<MengeluhPage> {
       ),
     );
   }
-}
-
-makePostRequest(String dokter, String tema, String deskripsi) async {
-  print("LOOK HERE");
-  final uri = Uri.parse('http://127.0.0.1:8000/pasien/mengeluh/');
-  final headers = {'Content-Type': 'application/json'};
-  Map<String, dynamic> body = {
-    'pasien': 'anonymous user',
-    'dokter': dokter,
-    'tanggal': '2022-12-14',
-    'tema': tema,
-    'deskripsi': deskripsi
-  };
-  String jsonBody = json.encode(body);
-  final encoding = Encoding.getByName('utf-8');
-
-  Response response = await post(
-    uri,
-    headers: headers,
-    body: jsonBody,
-    encoding: encoding,
-  );
-
-  int statusCode = response.statusCode;
-  String responseBody = response.body;
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:sisehat_mobile/halaman_utama/all_pages/home_page.dart';
+import 'package:sisehat_mobile/halaman_utama/all_pages/instance_login.dart';
 
 import '../../registrasi/logindokter.dart';
 import '../../registrasi/signupdokter.dart';
@@ -26,13 +28,19 @@ class RiwayatPageDrawerState extends State<RiwayatPageDrawer> {
             title: const Text('Halaman Utama'),
             onTap: () async {
               // Route ke halaman utama
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HomePage(
+                          title: "Dokter",
+                        )),
+              );
             },
           ),
           // Menambahkan clickable menu
           ListTile(
             title: const Text('Log Out'),
             onTap: () async {
-              // Route menu ke halaman utama
               final response = await request.get(
                   'https://web-production-0ada.up.railway.app/auth/logout/');
 
@@ -43,7 +51,8 @@ class RiwayatPageDrawerState extends State<RiwayatPageDrawer> {
                 print("LOGGEDIN? " + request.loggedIn.toString());
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const DocLoginPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const instanceLogin()),
                 );
               } else {
                 request.loggedIn = true;

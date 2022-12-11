@@ -10,6 +10,9 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'dart:convert';
 
 import 'package:sisehat_mobile/dokter/page/lihat_riwayat.dart';
+import 'package:sisehat_mobile/pasien/main.dart';
+
+import '../halaman_utama/all_pages/instance_login.dart';
 
 final primaryColor = Color(0xFFEAE0CC);
 final secondaryColor = Color(0xFF798478);
@@ -48,7 +51,10 @@ class _PatLoginPageState extends State<PatLoginPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const instanceLogin()),
+            );
           },
         ),
         title: const Text('Log In as Pasien'),
@@ -159,51 +165,56 @@ class _PatLoginPageState extends State<PatLoginPage> {
               // print(_namaPenyakit.toString());
               // print(_pesanDokter.toString());
               // addPenyakit(_pasien, _namaPenyakit, _pesanDokter);
-              final response = await request
-                  .login("http://localhost:8000/auth/pasien-login/", {
-                'username': _username,
-                'password': _password,
-              });
+              final response = await request.login(
+                  "https://web-production-0ada.up.railway.app/auth/pasien-login/",
+                  {
+                    'username': _username,
+                    'password': _password,
+                  });
               print(response);
               if (request.loggedIn) {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Dialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 15,
-                      child: Container(
-                        child: ListView(
-                          padding: const EdgeInsets.only(top: 20, bottom: 20),
-                          shrinkWrap: true,
-                          children: <Widget>[
-                            const Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Center(
-                                child: Text("Log In berhasil. Redirecting."),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LihatRiwayat()),
-                                  );
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Pasien()),
                 );
+                // showDialog(
+                //   context: context,
+                //   builder: (context) {
+                //     return Dialog(
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(10),
+                //       ),
+                //       elevation: 15,
+                //       child: Container(
+                //         child: ListView(
+                //           padding: const EdgeInsets.only(top: 20, bottom: 20),
+                //           shrinkWrap: true,
+                //           children: <Widget>[
+                //             const Padding(
+                //               padding: EdgeInsets.all(10),
+                //               child: Center(
+                //                 child: Text("Log In berhasil. Redirecting."),
+                //               ),
+                //             ),
+                //             Padding(
+                //               padding: const EdgeInsets.all(10),
+                //               child: TextButton(
+                //                 onPressed: () {
+                //                   Navigator.pushReplacement(
+                //                     context,
+                //                     MaterialPageRoute(
+                //                         builder: (context) => LihatRiwayat()),
+                //                   );
+                //                 },
+                //                 child: const Text('OK'),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // );
               } else {
                 showDialog(
                   context: context,
