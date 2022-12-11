@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sisehat_mobile/dokter/models/pasien.dart';
+import 'package:sisehat_mobile/pasien/pages/note_page.dart';
+
+import 'utils/colors.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(Pasien());
 }
 
 class MyApp extends StatelessWidget {
@@ -110,6 +114,28 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class Pasien extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Dashboard',
+      theme: ThemeData(
+        fontFamily: 'Quicksand',
+        primaryColor: MyColors.primary,
+        accentColor: MyColors.accent,
+        brightness: Brightness.light,
+      ),
+      darkTheme: ThemeData(
+        fontFamily: 'Quicksand',
+        primaryColor: MyColors.primary,
+        accentColor: MyColors.accent,
+        brightness: Brightness.dark,
+      ),
+      home: NotePage(),
     );
   }
 }
