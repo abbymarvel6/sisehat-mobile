@@ -1,4 +1,5 @@
 import 'package:sisehat_mobile/main.dart' as parent;
+import 'package:sisehat_mobile/pasien/widgets/daftar_keluhan.dart';
 
 import 'obat_page.dart';
 import 'penyakit_page.dart';
@@ -23,9 +24,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List<String> itemNames = [
-      'keluhan',
+      'mengeluh',
       'penyakit',
-      'obat',
+      'keluhan',
     ]; //name of each individual tile
 
     return Scaffold(
@@ -120,11 +121,11 @@ class _HomePageState extends State<HomePage> {
                                   CupertinoPageRoute(
                                     builder: (context) {
                                       if (index == 0) {
-                                        return KeluhanPage();
+                                        return MengeluhPage();
                                       } else if (index == 1) {
                                         return PenyakitPage();
                                       } else if (index == 2) {
-                                        return ObatPage();
+                                        return KeluhanPage();
                                       } else {
                                         return null;
                                       }

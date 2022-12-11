@@ -85,7 +85,8 @@ class _PenyakitPageState extends State<PenyakitPage> {
                                       Text(
                                         snapshot.data[index].diagnosis +
                                             " -- " +
-                                            snapshot.data[index].pasien,
+                                            snapshot.data[index].pasien +
+                                            "(pasien)",
                                         style: HeadingStylesDefault.accent,
                                         textAlign: TextAlign.center,
                                         softWrap: true,
@@ -113,7 +114,9 @@ class _PenyakitPageState extends State<PenyakitPage> {
                                         overflow: TextOverflow.fade,
                                       ),
                                       Text(
-                                        "Dokter " + snapshot.data[index].dokter,
+                                        "Dokter " +
+                                            snapshot.data[index].dokter +
+                                            "(dokter)",
                                         style: isThemeCurrentlyDark(context)
                                             ? BodyStylesDefault.white
                                             : BodyStylesDefault.black,
