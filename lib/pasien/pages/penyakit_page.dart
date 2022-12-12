@@ -72,7 +72,8 @@ class _PenyakitPageState extends State<PenyakitPage> {
                           );
                         } else {
                           return ListView(
-                            children: List.generate(1, (index) {
+                            children:
+                                List.generate(snapshot.data.length, (index) {
                               return CommonTile(
                                 child: Padding(
                                   padding: EdgeInsets.all(20.0),
