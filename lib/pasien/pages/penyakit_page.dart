@@ -56,6 +56,7 @@ class _PenyakitPageState extends State<PenyakitPage> {
                 child: FutureBuilder(
                     future: fetchPenyakit(),
                     builder: (context, AsyncSnapshot snapshot) {
+                      print("DATA: ${snapshot.data.toString()}");
                       if (snapshot.data == null) {
                         return const Center(child: CircularProgressIndicator());
                       } else {

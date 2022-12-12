@@ -6,6 +6,8 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:sisehat_mobile/dokter/page/form_penyakit.dart';
 import 'package:sisehat_mobile/dokter/page/lihat_riwayat.dart';
 
+import '../halaman_utama/all_pages/instance_login.dart';
+
 final primaryColor = Color(0xFFEAE0CC);
 final secondaryColor = Color(0xFF798478);
 final tertiaryColor = Color(0xFFA0A083);
@@ -65,7 +67,10 @@ class _DocLoginPageState extends State<DocLoginPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const instanceLogin()),
+            );
           },
         ),
         title: const Text('Log In as Dokter'),

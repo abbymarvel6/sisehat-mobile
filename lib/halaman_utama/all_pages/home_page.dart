@@ -4,17 +4,46 @@ import 'package:sisehat_mobile/halaman_utama/all_pages/instance_login.dart';
 import 'package:sisehat_mobile/halaman_utama/all_widgets/feedback_widget.dart';
 import 'package:sisehat_mobile/halaman_utama/all_widgets/fitur_widget.dart';
 
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+
+// class InitHomePage extends StatelessWidget {
+//   const InitHomePage({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Provider(
+//         create: (_) {
+//           CookieRequest request = CookieRequest();
+//           return request;
+//         },
+//         child: MaterialApp(
+//           title: 'Lihat Riwayat',
+//           home: HomePage(""),
+//           routes: {
+//             "/login": (BuildContext context) => const instanceLogin(),
+//           },
+//         ));
+//   }
+// }
+
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, required this.title}) : super(key: key);
+
+  final String title;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState(title: title);
 }
 
 class _HomePageState extends State<HomePage> {
+  _HomePageState({required this.title});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 234, 224, 204),
       bottomNavigationBar: BottomNavigationBar(
@@ -51,10 +80,10 @@ class _HomePageState extends State<HomePage> {
             label: '',
           ),
         ],
-      ), resizeToAvoidBottomInset: false, // set it to false
+      ),
+      resizeToAvoidBottomInset: false, // set it to false
       body: SingleChildScrollView(
-        child:
-        SafeArea(
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -91,9 +120,7 @@ class _HomePageState extends State<HomePage> {
                       backgroundColor: Colors.grey,
                       child: CircleAvatar(
                         radius: 28,
-                        backgroundImage: 
-                        AssetImage("lib/assets/user.png"),
-                        
+                        backgroundImage: AssetImage("lib/assets/user.png"),
                       ),
                     )
                   ],
@@ -149,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                             height: 35,
                             padding: const EdgeInsets.all(8.0),
                             decoration: BoxDecoration(
-                                color:  Color.fromARGB(1000, 77, 106, 109),
+                                color: Color.fromARGB(1000, 77, 106, 109),
                                 borderRadius: BorderRadius.circular(12.0)),
                             child: const Center(
                               child: Text(
@@ -176,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
-                    children:  [
+                    children: [
                       Image.asset(
                         "lib/assets/healthcare.png",
                         width: 50,
@@ -186,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                         width: 12,
                       ),
                       const Text(
-                        "apa yang anda butuhkan? coba cek fitur!",
+                        "Apa yang anda butuhkan? coba cek fitur!",
                         style: TextStyle(
                           color: Color.fromARGB(255, 72, 65, 65),
                         ),
@@ -201,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                   height: 50,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
-                    children: const [
+                    children: [
                       fitur_widget(
                         imagePath: "lib/assets/capsules.png",
                         imageName: "Lihat Obat",
@@ -209,36 +236,125 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(
                         width: 20,
                       ),
-                      fitur_widget(
-                        imagePath: "lib/assets/medical-record.png",
-                        imageName: "Lihat Riwayat",
+                      InkWell(
+                        child: const fitur_widget(
+                          imagePath: "lib/assets/medical-record.png",
+                          imageName: "Lihat Riwayat",
+                        ),
+                        onTap: () {
+                          if (title == "Dokter") {
+                            Navigator.pop(
+                              context,
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  elevation: 15,
+                                  child: Container(
+                                    child: ListView(
+                                      padding: const EdgeInsets.only(
+                                          top: 20, bottom: 20),
+                                      shrinkWrap: true,
+                                      children: <Widget>[
+                                        const Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child: Center(
+                                            child: Text(
+                                                "Anda harus login sebagai Dokter terlebih dahulu. Silahkan login ulang."),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Kembali'),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        },
                       ),
                       SizedBox(
                         width: 20,
                       ),
-                      fitur_widget(
-                        imagePath: "lib/assets/tambahkeluhan.png",
-                        imageName: "Tambah keluhan",
+                      InkWell(
+                        child: fitur_widget(
+                          imagePath: "lib/assets/tambahkeluhan.png",
+                          imageName: "Tambah keluhan",
+                        ),
+                        onTap: () {
+                          if (title == "Pasien") {
+                            Navigator.pop(
+                              context,
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  elevation: 15,
+                                  child: Container(
+                                    child: ListView(
+                                      padding: const EdgeInsets.only(
+                                          top: 20, bottom: 20),
+                                      shrinkWrap: true,
+                                      children: <Widget>[
+                                        const Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child: Center(
+                                            child: Text(
+                                                "Anda harus login sebagai Pasien terlebih dahulu. Silahkan login ulang."),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Kembali'),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        },
                       ),
                     ],
                   ),
                 ),
-                
                 const SizedBox(
                   height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
-                    Text(
-                      "Feedback APP!",
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 72, 65, 65),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                      textAlign:TextAlign.center
-                    ),
+                    Text("Feedback APP!",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 72, 65, 65),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.center),
                     Text(
                       "See all",
                       style: TextStyle(
@@ -253,44 +369,59 @@ class _HomePageState extends State<HomePage> {
                 ),
                 InkWell(
                   child: SizedBox(
-                  height: 180,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: const [
-                      feedback_widget(
-                        image: "lib/assets/feedback.png",
-                        judul: "Lihat Feedback",
-                        keterangan: "klik disini!",
-                      ),
-                    ],
+                    height: 180,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: const [
+                        feedback_widget(
+                          image: "lib/assets/feedback.png",
+                          judul: "Lihat Feedback",
+                          keterangan: "klik disini!",
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                  onTap: () => Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const feedbackPage()),
+                  onTap: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => feedbackPage(title: title)),
                   ),
-                
                 ),
                 const SizedBox(
                   height: 50,
                 ),
                 InkWell(
                   child: SizedBox(
-                  height: 180,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: const [
-                      feedback_widget(
-                        image: "lib/assets/logout.png",
-                        judul: "Logout",
-                        keterangan: "klik disini!",
-                      ),
-                    ],
+                    height: 180,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: const [
+                        feedback_widget(
+                          image: "lib/assets/logout.png",
+                          judul: "Logout",
+                          keterangan: "klik disini!",
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                  onTap: () => Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const instanceLogin()),
-                  ),
-                
+                  onTap: () async {
+                    final response = await request.get(
+                        'https://web-production-0ada.up.railway.app/auth/logout/');
+
+                    if (response["status"]) {
+                      request.loggedIn = false;
+                      request.jsonData = {};
+                      request.cookies = {};
+                      print("LOGGEDIN? " + request.loggedIn.toString());
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const instanceLogin()),
+                      );
+                    } else {
+                      request.loggedIn = true;
+                    }
+                  },
                 ),
               ],
             ),
