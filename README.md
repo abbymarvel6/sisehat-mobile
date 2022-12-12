@@ -1,5 +1,10 @@
 # SiSehat _Mobile_
 
+[![Release](https://github.com/abbymarvel6/sisehat-mobile/actions/workflows/release.yml/badge.svg)](https://github.com/abbymarvel6/sisehat-mobile/actions/workflows/release.yml)
+[![Build status](https://build.appcenter.ms/v0.1/apps/5ed00c11-68e4-4bc7-bcc3-1efca27fb4cf/branches/main/badge)](https://install.appcenter.ms/users/abbymarvel/apps/sisehat/distribution_groups/public)
+
+### [Link Aplikasi](https://install.appcenter.ms/users/abbymarvel/apps/sisehat/distribution_groups/public)
+
 #### Anggota Kelompok (A06):
 1. Abby Marvel Immanuel Parasian Pribadi (2106751796)
 2. Adly Renadi Raksanagara (2106752306)
