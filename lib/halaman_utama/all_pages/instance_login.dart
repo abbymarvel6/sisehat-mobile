@@ -47,6 +47,7 @@ class _instanceLoginState extends State<instanceLogin> {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(1000, 77, 106, 109),
         title: Text('Login As!'),
+        automaticallyImplyLeading: false,
       ),
       // appBar: AppBar(
       //   title: Text('FEEDBACK APP!'),
